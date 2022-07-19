@@ -20,6 +20,7 @@ public class MessageListener implements AcknowledgingMessageListener<String,Stri
     public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
 
         try {
+            acknowledgment.acknowledge(); // offset commit한다
             String key = consumerRecord.key();
             String value = consumerRecord.value();
             JSONObject jsonObject = new JSONObject(value);

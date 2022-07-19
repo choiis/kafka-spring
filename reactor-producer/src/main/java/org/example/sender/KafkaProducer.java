@@ -26,9 +26,8 @@ public class KafkaProducer {
     public Mono<Void> send(Flux<? extends Vo> messages) {
         log.info("KafkaProducer send " + messages);
         return Mono.deferWithContext(x -> {
-
-            var records = messages.map(message -> new ProducerRecord<String, Object>(TOPIC, message.getName(), message))
-                    .map(pRecord -> SenderRecord.create(pRecord, null));
+            Flux<SenderRecord<String,Object,Object>> records = messages.map(message -> new ProducerRecord<String, Object>(TOPIC, String.valueOf(message.hashCode()), message))
+                    .map(record -> SenderRecord.create(record, null));
             return sender.send(records)
                     .doOnError(e -> {
                         log.error("Failed to producer kafka", e);

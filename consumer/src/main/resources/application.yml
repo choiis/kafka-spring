@@ -4,8 +4,6 @@ spring:
   kafka:
     listener:
       ack-mode: MANUAL
-    consumer:
-      auto-offset-reset: earliest
 
 server:
   port: 12100
