@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: reactor-producer
+  main:
+    allow-bean-definition-overriding: true
+server:
+  port: 10100
+
+
+kafka:
+  server: "127.0.0.1:29092"
+  topic: "message.queue"

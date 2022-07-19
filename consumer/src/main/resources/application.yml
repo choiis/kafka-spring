@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: consumer
+  kafka:
+    listener:
+      ack-mode: MANUAL
+    consumer:
+      auto-offset-reset: earliest
+
+server:
+  port: 12100
+
+kafka:
+  server: "127.0.0.1:29092"
+  topic: "message.queue"
