@@ -13,7 +13,7 @@ services:
       - topic
 
   kafka:
-    image: wurstmeister/kafka:2.12-2.0.1
+    image: wurstmeister/kafka:2.12-2.4.1
     container_name: kafka
     environment:
       KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,OUTSIDE://0.0.0.0:29092

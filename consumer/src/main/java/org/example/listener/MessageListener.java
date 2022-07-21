@@ -1,8 +1,7 @@
 package org.example.listener;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.example.data.Vo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -11,26 +10,24 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MessageListener implements AcknowledgingMessageListener<String,String> {
+public class MessageListener implements AcknowledgingMessageListener<String, Vo> {
 
     private final static Logger log = LoggerFactory.getLogger(MessageListener.class);
 
     @Override
     @KafkaListener(topics = "message.queue", groupId = "event")
-    public void onMessage(ConsumerRecord<String, String> consumerRecord, Acknowledgment acknowledgment) {
+    public void onMessage(ConsumerRecord<String, Vo> consumerRecord, Acknowledgment acknowledgment) {
 
         try {
-            acknowledgment.acknowledge(); // offset commit한다
             String key = consumerRecord.key();
-            String value = consumerRecord.value();
-            JSONObject jsonObject = new JSONObject(value);
-            String name = (String) jsonObject.get("name");
-            int number = (Integer) jsonObject.get("number");
+            Vo vo = consumerRecord.value();
+            String name = vo.getName();
+            int number = vo.getNumber();
             log.info("consumerRecord key " + key + " value " + name + " " + number);
-        } catch (JSONException e) {
-            log.error("consume data key json parse error");
         } catch (Exception e) {
             log.error("consume data unexpected error ");
+        } finally {
+            acknowledgment.acknowledge(); // offset commit한다
         }
 
     }
