@@ -12,10 +12,7 @@ public class VoDeserializer implements Deserializer<Vo> {
     @Override
     public Vo deserialize(String s, byte[] bytes) {
         try {
-            if (bytes == null){
-                return null;
-            }
-            return objectMapper.readValue(new String(bytes, "UTF-8"), Vo.class);
+            return objectMapper.readValue(bytes, Vo.class);
         } catch (Exception e) {
             throw new SerializationException("Error when deserializing byte[] to Vo");
         }
