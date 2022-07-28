@@ -20,6 +20,20 @@ mvn -pl reactor-producer spring-boot:run
 mvn -pl consumer spring-boot:run
 ```
 
+* You can turn the switch on and off with an API call.
+
+```
+curl -i -X GET \
+  'http:://localhost:18080/on'
+
+```
+
+```
+curl -i -X GET \
+  'http:://localhost:18080/off'
+
+```
+
 * When I call it from restapi, the consumer works and keeps a log.
 ```
 curl -i -X POST \

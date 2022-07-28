@@ -1,12 +1,9 @@
 spring:
   application:
     name: consumer
-  kafka:
-    listener:
-      ack-mode: MANUAL
 
 server:
-  port: 12100
+  port: 18080
 
 kafka:
   server: "127.0.0.1:29092"
