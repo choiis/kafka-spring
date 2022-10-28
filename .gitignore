@@ -2,12 +2,19 @@
 *.class
 *.DS_Store
 
+.gradle/
+build/
+buildSrc/.gradle
+buildSrc/build
+
 .idea/
 .idea_modules/
 
 /spring-cloud.iml
 /.idea/
 /consumer/target/
+/consumer/build/
 /consumer/consumer.iml
 /reactor-producer/target/
+/reactor-producer/build/
 /reactor-producer/reactor-producer.iml

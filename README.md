@@ -4,7 +4,7 @@
 
 ### Execution
 
-* Execute kafka, zookeeper with docker
+* Execute kafka, zookeeper, kafka-ui, consul with docker
 
 ```bash
 docker-compose up -d
@@ -13,24 +13,24 @@ docker-compose up -d
 * Execute spring boot producer and consumer
 
 ```bash
-mvn -pl reactor-producer spring-boot:run
+./gradlew -p reactor-producer bootRun
 ```
 
 ```bash
-mvn -pl consumer spring-boot:run
+./gradlew -p consumer bootRun
 ```
 
 * You can turn the switch on and off with an API call.
 
 ```
 curl -i -X GET \
-  'http:://localhost:18080/on'
+  'http://localhost:18080/on'
 
 ```
 
 ```
 curl -i -X GET \
-  'http:://localhost:18080/off'
+  'http://localhost:18080/off'
 
 ```
 

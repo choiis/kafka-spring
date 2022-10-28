@@ -1,6 +1,9 @@
 spring:
   application:
     name: consumer
+  cloud:
+    consul:
+      enabled: true
 
 server:
   port: 18080
@@ -8,3 +11,11 @@ server:
 kafka:
   server: "127.0.0.1:29092"
   topic: "message.queue"
+
+management:
+  server:
+    port: 18085
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -50,3 +50,13 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
       - KAFKA_CLUSTERS_0_READONLY=true
+
+  consul-server:
+    image: consul:latest
+    restart: always
+    ports:
+      - "8600:8600/udp"
+      - "8500:8500"
+    command: "agent -server  -bootstrap -ui -client=0.0.0.0"
+    networks:
+      - topic

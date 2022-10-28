@@ -3,6 +3,9 @@ spring:
     name: reactor-producer
   main:
     allow-bean-definition-overriding: true
+  cloud:
+    consul:
+      enabled: true
 server:
   port: 10100
 
@@ -10,3 +13,11 @@ server:
 kafka:
   server: "127.0.0.1:29092"
   topic: "message.queue"
+
+management:
+  server:
+    port: 10105
+  endpoints:
+    web:
+      exposure:
+        include: '*'
