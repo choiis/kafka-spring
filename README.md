@@ -7,7 +7,7 @@
 * Execute kafka, zookeeper, kafka-ui, consul with docker
 
 ```bash
-docker-compose up -d
+docker-compose -f docker/docker-compose.yml up -d
 ```
 
 * Execute spring boot producer and consumer

@@ -7,6 +7,15 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'java'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.3"
+    }
 }
 
 repositories {
@@ -17,10 +26,17 @@ repositories {
 }
 
 group = 'org.example'
-version = '1.0-SNAPSHOT'
 
 java.sourceCompatibility = JavaVersion.VERSION_11
 java.targetCompatibility = JavaVersion.VERSION_11
+
+bootJar {
+    launchScript() // spring-boot-maven-plugin configuration executable true와 같다
+}
+
+test {
+    useJUnitPlatform()
+}
 
 publishing {
     publications {
