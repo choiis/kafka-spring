@@ -1,0 +1,10 @@
+
+kafka:
+  server: "kafka:9092"
+  topic: "message.queue"
+
+spring:
+  cloud:
+    consul:
+      host: consul-server
+      port: 8500

@@ -46,3 +46,17 @@ curl -i -X POST \
  'http://localhost:10100/api/producer'
 
 ```
+
+### Run all with docker-compose
+
+* build all
+```
+./gradlew clean build docker
+```
+
+* run all with docker-compose
+```
+docker-compose up -d
+```
+
+

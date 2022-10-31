@@ -6,6 +6,7 @@
 
 plugins {
     id 'org.example.java-conventions'
+    id 'com.palantir.docker' version '0.34.0'
 }
 
 dependencies {
@@ -19,6 +20,16 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
+}
+
+docker {
+    name 'reactor-producer'
+    tag 'Dockerhub', 'reactor-producer:latest'
+    dockerfile file('Dockerfile')
+    files tasks.bootJar.outputs.files
+    buildArgs(['JAR_FILE': tasks.bootJar.outputs.files.singleFile.name])
+    labels(['key': 'value'])
+
 }
 
 description = 'reactor-producer'

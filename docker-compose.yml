@@ -1,0 +1,92 @@
+version: '3.3'
+
+networks:
+  topic:
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - topic
+
+  kafka:
+    image: wurstmeister/kafka:2.12-2.4.1
+    container_name: kafka
+    environment:
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,OUTSIDE://0.0.0.0:29092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,OUTSIDE://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ADVERTISED_PORT: 29092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CREATE_TOPICS: "message.queue:4:1"   # Topic명:Partition개수:Replica개수
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "9092:9092"
+      - "19092:19092"
+      - "29092:29092"
+    depends_on:
+      - zookeeper
+    networks:
+      - topic
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - kafka
+    networks:
+      - topic
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+      - KAFKA_CLUSTERS_0_READONLY=true
+
+  consul-server:
+    image: consul:latest
+    restart: always
+    ports:
+      - "8600:8600/udp"
+      - "8500:8500"
+    command: "agent -server  -bootstrap -ui -client=0.0.0.0"
+    networks:
+      - topic
+
+  consumer:
+    image: consumer:latest
+    restart: always
+    ports:
+      - "18080:18080"
+      - "18085:18085"
+    networks:
+      - topic
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      JAVA_OPTS: "-Xms512m -Xmx512m -Djava.security.egd=file:/dev/./urandom -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/opt/
+          -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8
+          -Duser.language=ko -Duser.timezone=Asia/Seoul
+          -Dsun.net.inetaddr.ttl=60 -Dsun.net.inetaddr.negative.ttl=30"
+
+  reactor-producer:
+    image: reactor-producer:latest
+    restart: always
+    ports:
+      - "10100:10100"
+      - "10105:10105"
+    networks:
+      - topic
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      JAVA_OPTS: "-Xms512m -Xmx512m -Djava.security.egd=file:/dev/./urandom -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/opt/
+          -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8
+          -Duser.language=ko -Duser.timezone=Asia/Seoul
+          -Dsun.net.inetaddr.ttl=60 -Dsun.net.inetaddr.negative.ttl=30"
